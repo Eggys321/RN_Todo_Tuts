@@ -14,12 +14,17 @@ import Task from "./components/Task";
 
 export default function App() {
   const [task, setTask] = useState();
-  const [taskItems,setTaskItems] = useState([])
+  const [taskItems, setTaskItems] = useState([]);
   const handleAddTask = () => {
     // console.log(task);
-    Keyboard.dismiss()
-    setTaskItems([...taskItems,task])
-    setTask(null)
+    Keyboard.dismiss();
+    setTaskItems([...taskItems, task]);
+    setTask(null);
+  };
+  const completeTask = () => {
+    let itemsCopy = [...taskItems];
+    itemsCopy.splice(index, 1);
+    setTaskItems(itemsCopy);
   };
   return (
     <View style={styles.container}>
@@ -28,11 +33,13 @@ export default function App() {
         <Text style={styles.sectionTitle}> Todays tasks </Text>
         <View style={styles.items}>
           {/* this is were tasks will go! */}
-          {
-            taskItems.map((item,index)=>{
-             return <Text key={index}  text={item}  />
-            })
-          }
+          {taskItems.map((item, index) => {
+            return (
+              <TouchableOpacity key={index}  onPress={() => completeTask(index)}>
+                <Text text={item} />
+              </TouchableOpacity>
+            );
+          })}
           <Task text="Task 1" />
           <Task text="Task 2" />
         </View>
@@ -45,7 +52,7 @@ export default function App() {
           style={styles.input}
           placeholder={"write a task"}
           value={task}
-          onChange={text => setTask(text)}
+          onChange={(text) => setTask(text)}
         />
         <TouchableOpacity onPress={() => handleAddTask()}>
           <View style={styles.addWrapper}>
